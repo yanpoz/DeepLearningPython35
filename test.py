@@ -19,19 +19,19 @@
 # - read the input data:
 import mnist_loader
 import imager
-n = 30
+n = 1000
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper(n)
 training_data = list(training_data)
 
-imager.show(training_data, n)
+# imager.show(training_data, n)
 
 # ---------------------
 # - network.py example:
 import network
 
 
-# net = network.Network([784, 30, 10])
-# net.SGD(training_data, 30, 10, 3.0, test_data=test_data)
+net = network.Network([784, 30, 10])
+net.SGD(training_data, 5, 10, 7.0, test_data=test_data)    #2nd arg  was 30
 
 
 # ----------------------

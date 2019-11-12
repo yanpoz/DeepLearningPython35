@@ -19,6 +19,8 @@ import random
 # Third-party libraries
 import numpy as np
 
+import imager
+
 class Network(object):
 
     def __init__(self, sizes):
@@ -36,10 +38,10 @@ class Network(object):
         self.sizes = sizes
 
         # self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
-        # self.weights = [np.random.randn(y, x)
-        #                 for x, y in zip(sizes[:-1], sizes[1:])]
+        self.weights = [np.random.randn(y, x)
+                        for x, y in zip(sizes[:-1], sizes[1:])]
         self.biases = [np.zeros((l, 1)) for l in sizes[1:]]         #Not random
-        self.weights = [np.full((y, x), 0.5)                        #Not random
+        self.weights = [np.zeros((y, x))                             #Not random
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
     def feedforward(self, a):
@@ -66,7 +68,7 @@ class Network(object):
             test_data = list(test_data)
             n_test = len(test_data)
 
-        for j in range(epochs):
+        for epoch in range(epochs):
             random.shuffle(training_data)
             mini_batches = [
                 training_data[k:k+mini_batch_size]
@@ -74,9 +76,11 @@ class Network(object):
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
-                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test))
+                print("Epoch {} : {} / {}".format(epoch,self.evaluate(test_data),n_test))
             else:
-                print("Epoch {} complete".format(j))
+                print("Epoch {} complete".format(epoch))
+
+            imager.show_w(self.weights[0])
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying
@@ -85,7 +89,11 @@ class Network(object):
         is the learning rate."""
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        r = -1
         for x, y in mini_batch:
+            r = r + 1
+            # if (r % 10) == 0: imager.show_w(self.weights[0])
+            if (r % 10) == 0: r = r + 1
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
@@ -93,6 +101,7 @@ class Network(object):
                         for w, nw in zip(self.weights, nabla_w)]
         self.biases = [b-(eta/len(mini_batch))*nb
                        for b, nb in zip(self.biases, nabla_b)]
+        p = 0
 
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
