@@ -19,10 +19,11 @@
 # - read the input data:
 import mnist_loader
 import imager
-training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
+n = 30
+training_data, validation_data, test_data = mnist_loader.load_data_wrapper(n)
 training_data = list(training_data)
 
-imager.show(training_data, 4)
+imager.show(training_data, n)
 
 # ---------------------
 # - network.py example:

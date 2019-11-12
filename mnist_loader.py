@@ -17,7 +17,7 @@ import gzip
 import numpy as np
 
 
-def load_data():
+def load_data(n: int):
     """Return the MNIST data as a tuple containing the training data,
     the validation data, and the test data.
     The ``training_data`` is returned as a tuple with two entries.
@@ -40,7 +40,6 @@ def load_data():
     training_data, validation_data, test_data = pickle.load(f, encoding="latin1")
     f.close()
     # return (training_data, validation_data, test_data)    #Old return of all data
-    n = 10
     return (
         tuple((training_data[0][:n], training_data[1][:n])),
         tuple((validation_data[0][:n], validation_data[1][:n])),
@@ -48,7 +47,7 @@ def load_data():
     )
 
 
-def load_data_wrapper():
+def load_data_wrapper(n: int):
     """Return a tuple containing ``(training_data, validation_data,
     test_data)``. Based on ``load_data``, but the format is more
     convenient for use in our implementation of neural networks.
@@ -66,7 +65,7 @@ def load_data_wrapper():
     the training data and the validation / test data.  These formats
     turn out to be the most convenient for use in our neural network
     code."""
-    tr_d, va_d, te_d = load_data()
+    tr_d, va_d, te_d = load_data(n)
 
     # training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
     # training_inputs = [np.matrix(img).T for img in tr_d[0]]   #Better way to transpose input data
