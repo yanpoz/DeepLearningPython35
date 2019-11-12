@@ -69,8 +69,8 @@ def load_data_wrapper():
     tr_d, va_d, te_d = load_data()
 
     # training_inputs = [np.reshape(x, (784, 1)) for x in tr_d[0]]
-    # training_inputs = [np.matrix(img).T for img in tr_d[0]] #Better way to transpose input data
-    training_inputs = [img[np.newaxis].T for img in tr_d[0]]
+    # training_inputs = [np.matrix(img).T for img in tr_d[0]]   #Better way to transpose input data
+    training_inputs = [img[np.newaxis].T for img in tr_d[0]]    #Cut img vector with empty axes
     training_results = [vectorized_result(y) for y in tr_d[1]]
     training_data = zip(training_inputs, training_results)
 

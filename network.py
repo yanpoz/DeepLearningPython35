@@ -34,8 +34,12 @@ class Network(object):
         ever used in computing the outputs from later layers."""
         self.num_layers = len(sizes)
         self.sizes = sizes
-        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
-        self.weights = [np.random.randn(y, x)
+
+        # self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
+        # self.weights = [np.random.randn(y, x)
+        #                 for x, y in zip(sizes[:-1], sizes[1:])]
+        self.biases = [np.zeros((l, 1)) for l in sizes[1:]]         #Not random
+        self.weights = [np.full((y, x), 0.5)                        #Not random
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
     def feedforward(self, a):
@@ -70,7 +74,7 @@ class Network(object):
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
-                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test));
+                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test))
             else:
                 print("Epoch {} complete".format(j))
 
@@ -107,8 +111,15 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
+
+        cost_der = self.cost_derivative(activations[-1], y)
+        zss = sigmoid_prime(zs[-1])
+        delta0 = cost_der * zss
+
         delta = self.cost_derivative(activations[-1], y) * \
             sigmoid_prime(zs[-1])
+        p = delta == delta0
+        
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
         # Note that the variable l in the loop below is used a little
