@@ -80,7 +80,8 @@ class Network(object):
             else:
                 print("Epoch {} complete".format(epoch))
 
-            imager.show_w(self.weights[0])
+        print(self.biases[0])
+        imager.show_wb(*self.weights)
 
     def update_mini_batch(self, mini_batch, eta):
         """Update the network's weights and biases by applying

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import math
+import pylab
 
 def show(images, n):
     imgs = images[0:n]
@@ -17,18 +18,22 @@ def show(images, n):
     plt.show()
     return
 
-def show_w(weights):
-    n = weights.__len__()
+def show_wb(weights0, weights1):
+    n = weights0.__len__()
     rows = math.floor(math.sqrt(n))
     cols = n // rows
 
-    weights = [weights[i].reshape(28, 28) for i in range(30)]
-
-    plt.figure(figsize=(7, 7))
-
+    plt.figure(1, figsize=(7, 7))
+    weights0 = [weights0[i].reshape(28, 28) for i in range(30)]
     for i in range(30):
         plt.subplot(5, 6, i+1)
-        plt.imshow(weights[i])
+        plt.imshow(weights0[i])
 
-    plt.show()
+    plt.figure(2, figsize=(4, 4))
+    weights1 = [weights1[i].reshape(5, 6) for i in range(10)]
+    for i in range(10):
+        plt.subplot(1, 10, i+1)
+        plt.imshow(weights1[i])
+
+    pylab.show()
     return
