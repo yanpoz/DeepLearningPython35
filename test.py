@@ -31,7 +31,7 @@ import network
 
 
 net = network.Network([784, 30, 10])
-net.SGD(training_data, 3, 200, 2.0, test_data=test_data)    #2nd arg  was 30
+net.SGD(training_data, 7, 10, 5.0, test_data=test_data)    #2nd arg  was 30
 
 
 # ----------------------
