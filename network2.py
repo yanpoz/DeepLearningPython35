@@ -162,7 +162,7 @@ class Network(object):
 
         if evaluation_data:
             evaluation_data = list(evaluation_data)
-            n_data = len(evaluation_data)
+            n_evo = len(evaluation_data)
 
         # early stopping functionality:
         best_accuracy=0
@@ -170,16 +170,16 @@ class Network(object):
 
         evaluation_cost, evaluation_accuracy = [], []
         training_cost, training_accuracy = [], []
-        for j in range(epochs):
+        for epoh in range(epochs):
             random.shuffle(training_data)
             mini_batches = [
-                training_data[k:k+mini_batch_size]
-                for k in range(0, n, mini_batch_size)]
+                training_data[mini_batch:mini_batch+mini_batch_size]
+                for mini_batch in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
-                self.update_mini_batch(
+                self.update_mini_batch(                     #!!!!!!!!!!!!!!
                     mini_batch, eta, lmbda, len(training_data))
 
-            print("Epoch %s training complete" % j)
+            print("Epoch %s training complete" % epoh)
 
             if monitor_training_cost:
                 cost = self.total_cost(training_data, lmbda)
@@ -196,7 +196,9 @@ class Network(object):
             if monitor_evaluation_accuracy:
                 accuracy = self.accuracy(evaluation_data)
                 evaluation_accuracy.append(accuracy)
-                print("Accuracy on evaluation data: {} / {}".format(self.accuracy(evaluation_data), n_data))
+                print("Accuracy on evaluation data: {} / {}".format(self.accuracy(evaluation_data), n_evo))
+
+                print("===================================")
 
             # Early stopping:
             if early_stopping_n > 0:
